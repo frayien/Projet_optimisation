@@ -18,9 +18,9 @@ public:
     Solution(uint32_t const& bin_size = 0);
     virtual ~Solution();
 
-    inline size_t const& get_nb_bin() const { return m_solution.size(); }
+    inline size_t get_nb_bin() const { return m_solution.size(); }
 
-    inline uint32_t const& get_bin_size() const { return m_bin_size; }
+    inline uint32_t get_bin_size() const { return m_bin_size; }
     inline void set_bin_size(uint32_t const& bin_size) { m_bin_size = bin_size; }
     
     void add_bin();
@@ -28,7 +28,7 @@ public:
     bool can_insert(size_t const& bin, uint32_t const& item) const;
     bool insert(size_t const& bin, uint32_t const& item);
 
-    void print(std::ostream & out) const;
+    friend std::ostream& operator<<(std::ostream& out, Solution const& obj);
 
 private:
     std::vector<Bin> m_solution;

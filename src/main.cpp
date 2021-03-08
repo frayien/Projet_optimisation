@@ -7,7 +7,7 @@
 
 struct
 {
-    std::string in_file = "resources/binpack1d_00.txt";
+    std::string in_file = "resources/binpack1d_06.txt";
 } config;
 
 int main(int argc, char *args[]) 
@@ -20,7 +20,11 @@ int main(int argc, char *args[])
     input.close();
 
     std::cout << config.in_file << " " << fd.get_bin_size() << " " << fd.get_item_num() << std::endl;
-    std::cout << "min nb bin " << fd.min_number_of_bin() << std::endl;
+    std::cout << "nombre bin min : " << fd.min_number_of_bin() << std::endl;
+
+    Solution sol = fd.first_fit_decreasing();
+
+    std::cout << sol;
     
     return 0;
 }

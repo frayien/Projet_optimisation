@@ -5,7 +5,6 @@
 #include <istream>
 #include <memory>
 #include <algorithm>
-#include <span>
 
 #include "Solution.h"
 

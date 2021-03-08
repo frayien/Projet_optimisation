@@ -1,5 +1,7 @@
 #include "FileData.h"
 
+#include <iostream>
+
 FileData::FileData() : 
     m_bin_size(0),
     m_item_num(0),
@@ -45,12 +47,35 @@ uint32_t FileData::min_number_of_bin() const
  */
 Solution FileData::first_fit_decreasing() const
 {
+    // copie des items
     std::unique_ptr<uint32_t[]> items = std::make_unique<uint32_t[]>(m_item_num);
     for(size_t i = 0; i<m_item_num; ++i)
     {
         items[i] = m_items[i];
     }
 
-    std::sort(std::begin(items), std::end(items));
-    Solution sol(m_bin_size);
+    // tous les objets dans un ordre croissant
+    std::sort(items.get(), items.get() + m_item_num, std::greater<uint32_t>());
+
+    Solution solution(m_bin_size);
+
+    // inserer les objets
+    for(size_t i = 0; i<m_item_num; ++i)
+    {
+        bool inserted = false;
+        size_t j = 0;
+        while(!inserted && solution.get_nb_bin() > j)
+        {
+            inserted = solution.insert(j, items[i]);
+            j++;
+        }
+        // si pas de bin dispo on en crée une nouvelle
+        if(!inserted)
+        {
+            solution.add_bin();
+            solution.insert(solution.get_nb_bin() - 1, items[i]);
+        }
+    }
+
+    return solution;
 }
