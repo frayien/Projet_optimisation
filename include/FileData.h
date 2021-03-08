@@ -3,20 +3,35 @@
 
 #include <cstdint>
 #include <istream>
+#include <memory>
+#include <algorithm>
+#include <span>
+
+#include "Solution.h"
 
 class FileData
 {
 public:
-    const uint32_t bin_size;
-    const uint32_t item_num;
-    uint32_t *items;
-
+    FileData();
     FileData(uint32_t const& _bin_size, uint32_t const& _item_num);
     virtual ~FileData();
 
-    static FileData from_stream(std::istream & in);
+    void load_from_stream(std::istream & in);
+    
+    // question 1
+    uint32_t min_number_of_bin() const;
+    // question 2
+    Solution first_fit_decreasing() const;
 
-    uint32_t min_nb_bin() const;
+    inline uint32_t const& get_bin_size() const { return m_bin_size; }
+    inline uint32_t const& get_item_num() const { return m_item_num; }
+    inline std::unique_ptr<uint32_t[]> const& get_items() const { return m_items; }
+
+private:
+    uint32_t m_bin_size;
+    uint32_t m_item_num;
+    
+    std::unique_ptr<uint32_t[]> m_items;
 };
 
 #endif // FNES_FILEDATA

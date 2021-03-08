@@ -14,12 +14,13 @@ int main(int argc, char *args[])
 {
     std::ifstream input(config.in_file);
 
-    FileData fd = FileData::from_stream(input);
+    FileData fd;
+    fd.load_from_stream(input);
 
     input.close();
 
-    std::cout << config.in_file << " " << fd.bin_size << " " << fd.item_num << std::endl;
-    std::cout << "min nb bin " << fd.min_nb_bin() << std::endl;
+    std::cout << config.in_file << " " << fd.get_bin_size() << " " << fd.get_item_num() << std::endl;
+    std::cout << "min nb bin " << fd.min_number_of_bin() << std::endl;
     
     return 0;
 }
