@@ -7,7 +7,7 @@
 
 struct
 {
-    std::string in_file = "resources/binpack1d_06.txt";
+    std::string in_file = "resources/binpack1d_00.txt";
 } config;
 
 int main(int argc, char *args[]) 

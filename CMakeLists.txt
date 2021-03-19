@@ -16,6 +16,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../")
 
+include_directories(/mingw64/include)
 include_directories(include)
 
 file(
@@ -34,4 +35,5 @@ add_executable(Project_opti ${HEADERS} ${SRCS})
 
 target_link_libraries(
     Project_opti
+    glpk
 )
