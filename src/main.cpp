@@ -22,9 +22,19 @@ int main(int argc, char *args[])
     std::cout << config.in_file << " " << fd.get_bin_size() << " " << fd.get_item_num() << std::endl;
     std::cout << "nombre bin min : " << fd.min_number_of_bin() << std::endl;
 
+    // résolution avec first fit decreasing
+
+    std::cout << " ------------ First Fit Decreasing ------------ " << std::endl << std::endl;
+
     Solution sol = fd.first_fit_decreasing();
 
-    std::cout << sol;
+    std::cout << sol << std::endl;
+
+    std::wcout << L" ------------ Résolution linéaire ------------ " << std::endl << std::endl;
+
+    sol = fd.solve_linear_problem();
+
+    std::cout << sol << std::endl;
     
     return 0;
 }

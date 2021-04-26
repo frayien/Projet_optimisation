@@ -8,6 +8,8 @@
 
 #include "Solution.h"
 
+#include "FGLPK.h"
+
 class FileData
 {
 public:
@@ -21,6 +23,8 @@ public:
     uint32_t min_number_of_bin() const;
     // question 2
     Solution first_fit_decreasing() const;
+    // question 3
+    Solution solve_linear_problem() const;
 
     inline uint32_t const& get_bin_size() const { return m_bin_size; }
     inline uint32_t const& get_item_num() const { return m_item_num; }

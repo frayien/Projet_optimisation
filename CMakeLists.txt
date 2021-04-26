@@ -35,5 +35,4 @@ add_executable(Project_opti ${HEADERS} ${SRCS})
 
 target_link_libraries(
     Project_opti
-    glpk
 )

@@ -34,3 +34,7 @@
 build/*
 obj/*
 .vscode/*
+
+unused
+
+solution.txt
