@@ -8,8 +8,6 @@
 
 #include "Solution.h"
 
-#include "FGLPK.h"
-
 class FileData
 {
 public:

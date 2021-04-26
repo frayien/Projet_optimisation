@@ -86,32 +86,28 @@ Solution FileData::first_fit_decreasing() const
 
 Solution FileData::solve_linear_problem() const
 {
+    int nb_bin_upper_bound = first_fit_decreasing().get_nb_bin();
+
+    // write problem to module file
     std::ofstream file;
 
     file.open("bpp_tmp.mod", std::ios::trunc);
 
-    file << "param m, integer, > 0;"                                      << std::endl;
-    file << "set I := 1..m;"                                              << std::endl;
-    file << "param w{i in 1..m}, > 0;"                                    << std::endl;
-    file << "param c, > 0;"                                               << std::endl;
-    file << "param z{i in I, j in 1..m} :="                               << std::endl;
-    file << "if i = 1 and j = 1 then 1"                                   << std::endl;
-    file << "else if exists{jj in 1..j-1} z[i,jj] then 0"                 << std::endl;
-    file << "else if sum{ii in 1..i-1} w[ii] * z[ii,j] + w[i] > c then 0" << std::endl;
-    file << "else 1;"                                                     << std::endl;
-    file << "check{i in I}: sum{j in 1..m} z[i,j] = 1;"                   << std::endl;
-    file << "check{j in 1..m}: sum{i in I} w[i] * z[i,j] <= c;"           << std::endl;
-    file << "param n := sum{j in 1..m} if exists{i in I} z[i,j] then 1;"  << std::endl;
-    file << "display n;"                                                  << std::endl;
-    file << "set J := 1..n;"                                              << std::endl;
-    file << "var x{i in I, j in J}, binary;"                              << std::endl;
-    file << "var used{j in J}, binary;"                                   << std::endl;
-    file << "s.t. one{i in I}: sum{j in J} x[i,j] = 1;"                   << std::endl;
-    file << "s.t. lim{j in J}: sum{i in I} w[i] * x[i,j] <= c * used[j];" << std::endl;
-    file << "minimize obj: sum{j in J} used[j];"                          << std::endl;
-    file << "data;"                                                       << std::endl;
+    file << "param m, integer, > 0;"                                          << std::endl; // m is the number of items
+    file << "set I := 1..m;"                                                  << std::endl; // I is the item id set
+    file << "param w{i in 1..m}, > 0;"                                        << std::endl; // w is the map of item weights
+    file << "param c, > 0;"                                                   << std::endl; // c is the size of the bins 
+    file << "param n, integer, > 0;"                                          << std::endl; // n is an upper bound of the optimal solution
+    file << "set J := 1..n;"                                                  << std::endl; // J is the bin id set
+    file << "var x{i in I, j in J}, binary;"                                  << std::endl; // x[i,j] = 1 if item i is in bin j
+    file << "var used{j in J}, binary;"                                       << std::endl; // used[j] = 1 if bin j is used
+    file << "s.t. one{i in I}: sum{j in J} x[i,j] = 1;"                       << std::endl; // each item must be in exactly one bin
+    file << "s.t. lim{j in J}: sum{i in I} w[i] * x[i,j] <= c * used[j];"     << std::endl; // each bin cannot be filled more than its size
+    file << "minimize obj: sum{j in J} used[j];"                              << std::endl; // we want to minimize the number of bin used
+    file << "data;"                                                           << std::endl;
 
-    file << "param m := " << m_item_num << ";"                            << std::endl;
+    file << "param n := " << nb_bin_upper_bound << ";"                        << std::endl;
+    file << "param m := " << m_item_num << ";"                                << std::endl;
 
     file << "param w := ";
 
@@ -122,16 +118,25 @@ Solution FileData::solve_linear_problem() const
     }
     file << ";" << std::endl;
 
-    file << "param c := " << m_bin_size << ";"                            << std::endl;
-    file << "end;"                                                        << std::endl;
+    file << "param c := " << m_bin_size << ";"                                << std::endl;
+    file << "end;"                                                            << std::endl;
 
     file.close();
 
+    // call glp to solve the problem
+
     std::system("glpsol -m bpp_tmp.mod --output solution.txt");
+
+    // read output to get the solution
 
     Solution solution(m_bin_size);
 
+    // regex to find relevent lines
+    // looking for : x[2,3] * 1
+    // meaning that the item 2 is in the bin 3
     std::regex result_regex("x\\[[0-9]+\\,[0-9]+\\]\\s*\\*\\s*1", std::regex_constants::ECMAScript);
+
+    // maping each bin to it's new id (we start with 'number of items' bins and end up with 'minimized' bins, so a mapping is needed)
     std::map<int,int> bin_map;
 
     std::ifstream file_sol;
@@ -146,20 +151,25 @@ Solution FileData::solve_linear_problem() const
             std::string buf = "";
             while(line[i] != '[') i++;
             i++;
+
+            // read item id
             while(line[i] != ',') { buf += line[i]; i++; }
             int item_id = std::stoi(buf);
             buf.clear();
             i++;
-            while(line[i] != ']') { buf += line[i]; i++; }
 
+            // read bin id
+            while(line[i] != ']') { buf += line[i]; i++; }
             int bin_id = std::stoi(buf);
 
+            // update mapping if needed
             if(!bin_map.contains(bin_id))
             {
                 bin_map[bin_id] = bin_map.size();
                 solution.add_bin();
             }
 
+            // construct solution
             solution.insert(bin_map[bin_id], m_items[item_id-1]);
         }
     }
