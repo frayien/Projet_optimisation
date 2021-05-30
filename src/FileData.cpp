@@ -34,6 +34,13 @@ void FileData::load_from_stream(std::istream & in)
     }
 }
 
+void FileData::load_from_path(std::filesystem::path const& path)
+{
+    std::ifstream input(path);
+    load_from_stream(input);
+    input.close();
+}
+
 uint32_t FileData::min_number_of_bin() const
 {
     uint32_t sum = 0;
@@ -91,7 +98,7 @@ Solution FileData::solve_linear_problem() const
     // write problem to module file
     std::ofstream file;
 
-    file.open("bpp_tmp.mod", std::ios::trunc);
+    file.open("glpk/bpp.mod", std::ios::trunc);
 
     file << "param m, integer, > 0;"                                          << std::endl; // m is the number of items
     file << "set I := 1..m;"                                                  << std::endl; // I is the item id set
@@ -124,8 +131,17 @@ Solution FileData::solve_linear_problem() const
     file.close();
 
     // call glp to solve the problem
+    #if defined(_WIN32)
 
-    std::system("glpsol -m bpp_tmp.mod --output solution.txt");
+    std::system(".\\glpk\\glpsol.exe -m glpk\\bpp.mod --output glpk\\solution.txt > glpk\\log.txt");
+
+    #elif defined(__linux__)
+
+    std::system("glpsol -m glpk/bpp.mod --output glpk/solution.txt > glpk/log.txt");
+
+    #else
+    #error unsupported OS
+    #endif
 
     // read output to get the solution
 
@@ -140,7 +156,7 @@ Solution FileData::solve_linear_problem() const
     std::map<int,int> bin_map;
 
     std::ifstream file_sol;
-    file_sol.open("solution.txt");
+    file_sol.open("glpk/solution.txt");
 
     std::string line;
     while (std::getline(file_sol, line)) 

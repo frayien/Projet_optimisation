@@ -31,10 +31,17 @@
 *.out
 *.app
 
-build/*
-obj/*
-.vscode/*
-
 unused
+build
+obj
+.vscode
 
 solution.txt
+
+!glpk/*
+glpk/*.txt
+glpk/*.mod
+
+rendu/*
+!rendu/rendu.tex
+!rendu/rendu.pdf

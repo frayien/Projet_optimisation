@@ -2,9 +2,10 @@
 #define FNES_FILEDATA
 
 #include <cstdint>
-#include <istream>
+#include <fstream>
 #include <memory>
 #include <algorithm>
+#include <filesystem>
 
 #include "Solution.h"
 
@@ -16,6 +17,7 @@ public:
     virtual ~FileData();
 
     void load_from_stream(std::istream & in);
+    void load_from_path(std::filesystem::path const& path);
     
     // question 1
     uint32_t min_number_of_bin() const;
