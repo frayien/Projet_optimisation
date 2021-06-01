@@ -130,7 +130,7 @@ Solution FileData::solve_linear_problem() const
 
     file.close();
 
-    // call glp to solve the problem
+    // call glpk to solve the problem
     #if defined(_WIN32)
 
     std::system(".\\glpk\\glpsol.exe -m glpk\\bpp.mod --output glpk\\solution.txt > glpk\\log.txt");
