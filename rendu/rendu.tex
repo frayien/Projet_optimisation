@@ -6,7 +6,8 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
- \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{inconsolata}
 
 \usepackage{listings}
 \usepackage{color}
@@ -39,13 +40,106 @@
 
 \section{Borne inférieure des jeux de données}
 
+La borne inférieure du nombre de bin à utiliser est obtenue en divisant la somme de la taille de tous les objets par la taille d'un bin.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | }  \hline
+    nom               & taille d'un bin & nombre d'items & nombre de bin \\ \hline
+    binpack1d\_00.txt & 9               & 24             & 13            \\ \hline
+    binpack1d\_01.txt & 150             & 250            & 99            \\ \hline
+    binpack1d\_02.txt & 150             & 500            & 198           \\ \hline
+    binpack1d\_03.txt & 1000            & 60             & 20            \\ \hline
+    binpack1d\_04.txt & 1000            & 120            & 40            \\ \hline
+    binpack1d\_05.txt & 1000            & 249            & 83            \\ \hline
+    binpack1d\_06.txt & 1000            & 501            & 167           \\ \hline
+    binpack1d\_11.txt & 100             & 50             & 25            \\ \hline
+    binpack1d\_12.txt & 120             & 50             & 26            \\ \hline
+    binpack1d\_13.txt & 120             & 500            & 252           \\ \hline
+    binpack1d\_14.txt & 150             & 500            & 215           \\ \hline
+    binpack1d\_21.txt & 10000           & 141            & 11            \\ \hline
+    binpack1d\_31.txt & 1000            & 160            & 61            \\ \hline
+  \end{tabular}
+\end{center}
+
+Résultats obtenus avec la commande : \texttt{./Project\_opti.exe question 1}.
+
+\section{Résolution avec FirstFitDecreasing}
+
+L'implémentation peut être trouvé dans la fonction \texttt{FileData::first\_fit\_decreasing()} dans le fichier \texttt{src/FileData.cpp}.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | }  \hline
+    nom               & borne inférieure & FirstFitDecreasing \\ \hline
+    binpack1d\_00.txt & 13               & 13                 \\ \hline
+    binpack1d\_01.txt & 99               & 100                \\ \hline
+    binpack1d\_02.txt & 198              & 201                \\ \hline
+    binpack1d\_03.txt & 20               & 23                 \\ \hline
+    binpack1d\_04.txt & 40               & 45                 \\ \hline
+    binpack1d\_05.txt & 83               & 94                 \\ \hline
+    binpack1d\_06.txt & 167              & 190                \\ \hline
+    binpack1d\_11.txt & 25               & 25                 \\ \hline
+    binpack1d\_12.txt & 26               & 29                 \\ \hline
+    binpack1d\_13.txt & 252              & 258                \\ \hline
+    binpack1d\_14.txt & 215              & 220                \\ \hline
+    binpack1d\_21.txt & 11               & 12                 \\ \hline
+    binpack1d\_31.txt & 61               & 62                 \\ \hline
+  \end{tabular}
+\end{center}
+
+Résultats obtenus avec la commande : \texttt{./Project\_opti.exe question 2}.
+
+\pagebreak
+\section{Résolution linéaire}
+\subsection{Solution de binpack1d\_00.txt}
+
+La résolution linéaire donne un résultat optimal à 13 bins en environ $38ms$.
+Le contenu de chaque bin étant :
+
+\begin{center}
+  \begin{tabular}{ | c | c | }  \hline
+    items & total \\ \hline
+    6     & 6     \\ \hline
+    6,3   & 9     \\ \hline
+    5,3   & 8     \\ \hline
+    5,4   & 9     \\ \hline
+    5,2,2 & 9     \\ \hline
+    4,5   & 9     \\ \hline
+    4,5   & 9     \\ \hline
+    4,4   & 8     \\ \hline
+    2,7   & 9     \\ \hline
+    2,7   & 9     \\ \hline
+    5,4   & 9     \\ \hline
+    8     & 8     \\ \hline
+    8     & 8     \\ \hline
+   \end{tabular}
+\end{center}
+
+Résultats obtenus avec la commande : \\ \texttt{./Project\_opti.exe question 3 file resources/binpack1d\_00.txt verbose}.
+
+\subsection{Limite de la résolution linéaire}
+
+\section{Générateurs aléatoires}
+
+Les générateurs de solution aléatoires peuvent être trouvés dans les fonctions \texttt{FileData::solve\_simple()} et \texttt{FileData::first\_fit\_random()} dans le fichier \texttt{src/FileData.cpp}. 
+
+Leur résultats peuvent être obtenus avec la commande : \\ \texttt{./Project\_opti.exe question 4 file resources/binpack1d\_00.txt verbose}.
+
+\section{Opérateurs de voisinage}
+
+
+
+\if 0
+
+\fi
+
 \end{document}
 
 \begin{lstlisting}
 // ...
 \end{lstlisting}
-
-\begin{tabular}{ | c | c | c | }  \hline
- a & b & c \\ \hline
- 1 & 2 & 3 \\ \hline
-\end{tabular}
+\begin{center}
+  \begin{tabular}{ | c | c | c | }  \hline
+    a & b & c \\ \hline
+    1 & 2 & 3 \\ \hline
+   \end{tabular}
+\end{center}

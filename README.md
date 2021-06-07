@@ -26,7 +26,9 @@ Le programme peut prendre plusieurs arguments (dans n'importe quel ordre)
 
 ## Compiler le programme
 
-Le plus simple pour compiler le projet sous Windows est d'installer MSYS2 :
+Compiler le programme nécessite d'intaller le compilateur `g++` (de préférence une version récente, testé avec 10.3) et `cmake`.
+
+Le plus simple pour compiler le projet sous Windows est d'installer le terminal MSYS2 :
 
 - Installer [MSYS2](https://www.msys2.org/)
 - Ouvrir la console de MSYS2
