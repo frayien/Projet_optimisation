@@ -27,6 +27,9 @@ int main(int argc, char *args[])
     case 6:
         question::question6(config);
         break;
+    case 7:
+        question::question7(config);
+        break;
     default:
         break;
     }

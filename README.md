@@ -24,6 +24,34 @@ Le programme peut prendre plusieurs arguments (dans n'importe quel ordre)
   
   Si présent, le programme affichera le détail des solutions trouvées.
 
+- `objectif` (par défaut `objectif 1`)
+
+  Défini la fonction objectif à utiliser.
+  - 1 : nombre de bin à minimiser
+  - 2 : score de remplissage
+
+- `initial` (par défaut `initial 1`)
+
+  Défini le générateur aléatoire à utiliser pour générer la solution initiale.
+  - 1 : autant de bin que d'items
+  - 2 : FirstFit avec ordre aléatoire
+
+- `step` (par défaut `step 1000`)
+
+  Défini la limite du nombre de pas de résolution.
+
+- `temperature` (par défaut `temperature 0.1`)
+
+  Défini la température initiale de l'algorithe du recuit simulé.
+
+- `lambda` (par défaut `lambda 0.99`)
+
+  Défini le facteur de décroissance de température (le lambda) de l'algorithe du recuit simulé.
+
+- `buffer` (par défaut `buffer 10`)
+
+  Défini la taille de la mémoire de l'algorithme tabou.
+
 ## Compiler le programme
 
 Compiler le programme nécessite d'intaller le compilateur `g++` (de préférence une version récente, testé avec 10.3) et `cmake`.

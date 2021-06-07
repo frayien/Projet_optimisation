@@ -11,6 +11,7 @@ namespace question
     void question4(Config const& config);
     void question5(Config const& config);
     void question6(Config const& config);
+    void question7(Config const& config);
 }
 
 #endif // FNES_QUESTION

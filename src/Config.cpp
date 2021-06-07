@@ -40,5 +40,65 @@ void Config::load_args(int argc, char *args[])
             verbose = true;
             continue;
         }
+
+        if(msg == "objectif")
+        {
+            i++;
+            if(i < argc)
+            {
+                objectif = std::stoi(args[i]);
+            }
+            continue;
+        }
+
+        if(msg == "initial")
+        {
+            i++;
+            if(i < argc)
+            {
+                initial = std::stoi(args[i]);
+            }
+            continue;
+        }
+
+        if(msg == "step")
+        {
+            i++;
+            if(i < argc)
+            {
+                max_step_n = std::stoi(args[i]);
+            }
+            continue;
+        }
+
+        if(msg == "temperature")
+        {
+            i++;
+            if(i < argc)
+            {
+                temperature_initiale = std::stod(args[i]);
+            }
+            continue;
+        }
+
+        if(msg == "lambda")
+        {
+            i++;
+            if(i < argc)
+            {
+                lambda = std::stod(args[i]);
+            }
+            continue;
+        }
+
+        if(msg == "buffer")
+        {
+            i++;
+            if(i < argc)
+            {
+                buffer = std::stoi(args[i]);
+            }
+            continue;
+        }
     }
 }
