@@ -133,14 +133,138 @@ Les opérateurs peuvent être trouvés dans les fonctions \texttt{Solution::move
 Une démonstration des opérateurs peut être obtenue avec la commande : \texttt{./Project\_opti.exe question 5}.
 
 \section{Recuit simulé}
-\subsection{binpack1d\_00.txt}
 
+L'implémentation du recuit simulé peut être trouvé dans la fonction \texttt{algo::recuit()} dans le fichier \texttt{src/algo.cpp}.
+Il est apellé dans \texttt{src/question6.cpp} à la ligne 129.
+
+Deux scénarios seront étudiés : recuit en partant de la solution simple (un item par bin) avec comme objectif le nombre de bin et recuit en partant de d'un first fit aléatoire et avec comme fonction objectif la somme des carrés des sommes des items de chaque bin.
+\pagebreak
+\subsection{Scénario 1}
+
+\texttt{./Project\_opti.exe question 6 file resources/binpack1d\_XX.txt objectif 1 initial 1 step 100000 temperature 1.44 lambda 0.99}
+
+J'ai choisi arbitrairement de paramétrer la température initiale à 1.44 et le lambda à 0.99. L'étude devra permettre de raffiner ou justifier ces valeurs.
+La température a été choisie pour que la probabilité initiale de choisir l'optition soit environ 0.5 pour une différence d'énergie de 1.
+
+J'ai pris un nombre de pas max de 10000 pour obtenir des résultats dans un temps raisonable.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }  \hline
+    nom               & optimal trouvé   & FirstFitDecreasing & borne inférieure & temps (ms) & pas    \\ \hline
+    binpack1d\_00.txt & 13 & 13 & 13 & 3 & 500 \\ \hline
+    binpack1d\_01.txt & 107 & 100 & 99 & 3495 & 100000 \\ \hline
+    binpack1d\_02.txt & 217 & 201 & 198 & 6910 & 100000 \\ \hline
+    binpack1d\_03.txt & 22 & 23 & 20 & 862 & 100000 \\ \hline
+    binpack1d\_04.txt & 43 & 45 & 40 & 1643 & 100000 \\ \hline
+    binpack1d\_05.txt & 90 & 94 & 83 & 3423 & 100000 \\ \hline
+    binpack1d\_06.txt & 182 & 190 & 167 & 6921 & 100000 \\ \hline
+    binpack1d\_11.txt & 27 & 25 & 25 & 787 & 100000 \\ \hline
+    binpack1d\_12.txt & 29 & 29 & 26 & 769 & 100000 \\ \hline
+    binpack1d\_13.txt & 282 & 258 & 252 & 7241 & 100000 \\ \hline
+    binpack1d\_14.txt & 235 & 220 & 215 & 6935 & 100000 \\ \hline
+    binpack1d\_21.txt & 12 & 12 & 11 & 962 & 100000 \\ \hline
+    binpack1d\_31.txt & 67 & 62 & 61 & 2213 & 100000 \\ \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Scénario 2}
+
+\texttt{./Project\_opti.exe question 6 file resources/binpack1d\_XX.txt objectif 2 initial 2 step 100000 temperature 1.44 lambda 0.99}
+
+J'ai choisi arbitrairement de paramétrer la température initiale à 1.44 et le lambda à 0.99. L'étude devra permettre de raffiner ou justifier ces valeurs.
+
+La température a été choisie pour que la probabilité initiale de choisir l'optition soit environ 0.5 pour une différence d'énergie de 1.
+Le lambda a été choisi pour que la probabilité de choix soit de 0.1 après 100 étapes.
+
+J'ai pris un nombre de pas max de 10000 pour obtenir des résultats dans un temps raisonable.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }  \hline
+    nom               & optimal trouvé   & FirstFitDecreasing & borne inférieure & temps & pas \\ \hline
+    binpack1d\_00.txt & 13 & 13 & 13 & 0 & 0 \\ \hline
+    binpack1d\_01.txt & 99 & 100 & 99 & 371 & 12143 \\ \hline
+    binpack1d\_02.txt & 198 & 201 & 198 & 5000 & 81322 \\ \hline
+    binpack1d\_03.txt & 21 & 23 & 20 & 690 & 100000 \\ \hline
+    binpack1d\_04.txt & 41 & 45 & 40 & 1381 & 100000 \\ \hline
+    binpack1d\_05.txt & 83 & 94 & 83 & 2272 & 79484 \\ \hline
+    binpack1d\_06.txt & 168 & 190 & 167 & 5635 & 100000 \\ \hline
+    binpack1d\_11.txt & 25 & 25 & 25 & 10 & 1499 \\ \hline
+    binpack1d\_12.txt & 29 & 29 & 26 & 593 & 100000 \\ \hline
+    binpack1d\_13.txt & 259 & 258 & 252 & 5498 & 100000 \\ \hline
+    binpack1d\_14.txt & 216 & 220 & 215 & 5500 & 100000 \\ \hline
+    binpack1d\_21.txt & 11 & 12 & 11 & 5 & 598 \\ \hline
+    binpack1d\_31.txt & 62 & 62 & 61 & 1657 & 100000 \\ \hline
+  \end{tabular}
+\end{center}
+
+On remarque que le deuxième scénario donne toujours de meilleurs résultats et est toujours plus rapide.
+\pagebreak
+\subsection{Scénario 2 avec $T0 = 4.48$ et $\lambda = 0.98$}
+\texttt{./Project\_opti.exe question 6 file resources/binpack1d\_XX.txt objectif 2 initial 2 step 200000 temperature 4.48 lambda 0.98}
+
+Je choisi la température pour que la probabilité initiale de choisir l'optition soit environ 0.8 pour une différence d'énergie de 1.
+Je choisi le lambda pour que la probabilité de choix soit de 0.1 après 100 étapes.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }  \hline
+    nom               & optimal trouvé   & FirstFitDecreasing & borne inférieure & temps & pas \\ \hline
+    binpack1d\_00.txt & 13 & 13 & 13 & 1 & 138 \\ \hline
+    binpack1d\_01.txt & 99 & 100 & 99 & 387 & 12637 \\ \hline
+    binpack1d\_02.txt & 198 & 201 & 198 & 5456 & 88182 \\ \hline
+    binpack1d\_03.txt & 21 & 23 & 20 & 1326 & 200000 \\ \hline
+    binpack1d\_04.txt & 41 & 45 & 40 & 2796 & 200000 \\ \hline
+    binpack1d\_05.txt & 83 & 94 & 83 & 1819 & 68295 \\ \hline
+    binpack1d\_06.txt & 167 & 190 & 167 & 10911 & 190307 \\ \hline
+    binpack1d\_11.txt & 26 & 25 & 25 & 1244 & 200000 \\ \hline
+    binpack1d\_12.txt & 29 & 29 & 26 & 1185 & 200000 \\ \hline
+    binpack1d\_13.txt & 258 & 258 & 252 & 11174 & 200000 \\ \hline
+    binpack1d\_14.txt & 216 & 220 & 215 & 11792 & 200000 \\ \hline
+    binpack1d\_21.txt & 11 & 12 & 11 & 4 & 482 \\ \hline
+    binpack1d\_31.txt & 62 & 62 & 61 & 3592 & 200000 \\ \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Scénario 2 avec $T0 = 4.48$ et $\lambda = 0.998$}
+\texttt{./Project\_opti.exe question 6 file resources/binpack1d\_XX.txt objectif 2 initial 2 step 200000 temperature 4.48 lambda 0.998}
+
+Je choisi la température pour que la probabilité initiale de choisir l'optition soit environ 0.8 pour une différence d'énergie de 1.
+Je choisi le lambda pour que la probabilité de choix soit de 0.1 après 1000 étapes.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }  \hline
+    nom               & optimal trouvé   & FirstFitDecreasing & borne inférieure & temps & pas \\ \hline
+    binpack1d\_00.txt & 13 & 13 & 13 & 1 & 87 \\ \hline
+    binpack1d\_01.txt & 99 & 100 & 99 & 365 & 12432 \\ \hline
+    binpack1d\_02.txt & 198 & 201 & 198 & 1793 & 30088 \\ \hline
+    binpack1d\_03.txt & 21 & 23 & 20 & 1324 & 200000 \\ \hline
+    binpack1d\_04.txt & 41 & 45 & 40 & 2658 & 200000 \\ \hline
+    binpack1d\_05.txt & 83 & 94 & 83 & 3100 & 110480 \\ \hline
+    binpack1d\_06.txt & 168 & 190 & 167 & 11972 & 200000 \\ \hline
+    binpack1d\_11.txt & 25 & 25 & 25 & 7 & 1071 \\ \hline
+    binpack1d\_12.txt & 29 & 29 & 26 & 1484 & 200000 \\ \hline
+    binpack1d\_13.txt & 258 & 258 & 252 & 11626 & 200000 \\ \hline
+    binpack1d\_14.txt & 217 & 220 & 215 & 11929 & 200000 \\ \hline
+    binpack1d\_21.txt & 11 & 12 & 11 & 9 & 1116 \\ \hline
+    binpack1d\_31.txt & 63 & 62 & 61 & 3135 & 200000 \\ \hline
+  \end{tabular}
+\end{center}
+
+On remarque que certains jeux de données atteigne un meilleur résultat avec un T0 plus grand, en effet ils ont plus de possibilité de sortir d'un minimum local au début de l'algorithme.
+En augmentant lambda on permet à certains jeux de données de converger plus vite vers une meilleure solution, mais d'autres jeux de données convergeront moins facilement car ils ne sortiront pas d'un minimum local.
 
 \section{Tabu Search}
 
-\if 0
+L'implémentation de la recherche tabou peut être trouvée dans la fonction \texttt{algo::tabou()} dans le fichier \texttt{src/algo.cpp}.
+Elle est apellée dans \texttt{src/question7.cpp} à la ligne 79.
 
-\fi
+\texttt{./Project\_opti.exe question 7 file resources/binpack1d\_XX.txt objectif 2 initial 2 step 100 buffer 10}
+
+Pour le jeu de données \texttt{binpack1d\_01.txt} avec un nombre de pas maximum de 100 et un buffer de 10 l'exécution prend 146 secondes et ne trouve pas un résultat obtimal.
+
+\section{Comparaison}
+
+La méthode tabou est beaucoup plus lente que la méthode du recuit simulé. En effet elle demande de visiter tous les voisins de la solution courante à chaque pas, ce qui prend beaucoup de temps.
+Je n'ai pas trouvé de manière plus efficace d'implémenter la méthode tabou.
 
 \end{document}
 

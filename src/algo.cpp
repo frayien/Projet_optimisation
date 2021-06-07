@@ -8,7 +8,7 @@
 
 namespace algo
 {
-    std::size_t recuit(Solution & solution, std::size_t kmax, energy_t einf, double temperature_initiale, double lambda, energy_function_t const& energy, neighbor_function_t const& voisin)
+    std::size_t recuit(Solution & solution, std::size_t kmax, std::size_t bin_n_inf, double temperature_initiale, double lambda, energy_function_t const& energy, neighbor_function_t const& voisin)
     {
         std::random_device random_device;
         std::mt19937 generateur(random_device());
@@ -21,7 +21,7 @@ namespace algo
         double temperature = temperature_initiale;
 
         std::size_t k = 0;
-        while (k < kmax && energy_courante > einf)
+        while (k < kmax && solution_courante.get_nb_bin() > bin_n_inf)
         {
             Solution solution_n = voisin(solution_courante, generateur);
             energy_t energy_n = energy(solution_n);
